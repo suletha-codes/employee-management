@@ -2,6 +2,7 @@ package com.example.employeemanagement.controller;
 
 
 import com.example.employeemanagement.entity.Employee;
+import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployees(){
         return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("/with-department")
+    public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
+        return employeeService.getEmployeeWithDepartment();
     }
 
 }

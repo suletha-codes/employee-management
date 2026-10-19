@@ -5,6 +5,7 @@ import com.example.employeemanagement.entity.Department;
 import com.example.employeemanagement.entity.Employee;
 import com.example.employeemanagement.exception.ResourceNotFoundException;
 import com.example.employeemanagement.repository.DepartmentRepository;
+import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
+    }
+
+    //JPQL Joins
+    public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
+        return employeeRepository.findEmployeeWithDepartment();
     }
 }
