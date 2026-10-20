@@ -24,13 +24,23 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(@RequestParam(required = false) Long departmentId){
+
+        if(departmentId != null){
+            return employeeService.getEmployeesByDepartmentId(departmentId);
+        }
+
         return employeeService.getAllEmployees();
     }
 
     @GetMapping("/with-department")
     public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
         return employeeService.getEmployeeWithDepartment();
+    }
+
+    @GetMapping("/by-dept-jpql")
+    public List<Employee> getEmployeesByDepartmentIdJPQL(@RequestParam Long departmentId){
+        return employeeService.getEmployeesByDepartmentIdJPQL(departmentId);
     }
 
 }

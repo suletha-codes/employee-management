@@ -1,6 +1,7 @@
 package com.example.employeemanagement.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Department {
     private Long id;
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "department")
     private List<Employee> employees = new ArrayList<>();
 

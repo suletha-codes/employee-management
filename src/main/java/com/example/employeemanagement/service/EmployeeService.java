@@ -37,4 +37,13 @@ public class EmployeeService {
     public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
         return employeeRepository.findEmployeeWithDepartment();
     }
+
+    //Find by dep_ID
+    public List<Employee> getEmployeesByDepartmentId(Long departmentId){
+        return employeeRepository.findByDepartmentId(departmentId);
+    }
+    //Find By Id JPQL
+    public List<Employee> getEmployeesByDepartmentIdJPQL(Long departmentId){
+        return employeeRepository.findEmployeesByDepartmentId(departmentId);
+    }
 }
