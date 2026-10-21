@@ -23,19 +23,19 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee, Long departmentId){
-        Department department = departmentRepository.findById(departmentId).orElseThrow(()->new ResourceNotFoundException("Department not found with Id "+ departmentId));
-        employee.setDepartment(department);
+        if(departmentId != null){
+            Department department = departmentRepository.findById(departmentId).orElseThrow(()->new ResourceNotFoundException("Department not found with Id "+ departmentId));
+            employee.setDepartment(department);
+        }else {
+            employee.setDepartment(null);
+        }
+
         return employeeRepository.save(employee);
 
     }
 
     public List<Employee> getAllEmployees(){
         return employeeRepository.findAll();
-    }
-
-    //JPQL Joins
-    public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
-        return employeeRepository.findEmployeeWithDepartment();
     }
 
     //Find by dep_ID
@@ -46,4 +46,23 @@ public class EmployeeService {
     public List<Employee> getEmployeesByDepartmentIdJPQL(Long departmentId){
         return employeeRepository.findEmployeesByDepartmentId(departmentId);
     }
+
+
+    //JPQL Joins
+    public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
+        return employeeRepository.findEmployeeWithDepartment();
+    }
+
+
+    //JPQL Inner Joins
+    public List<EmployeeDepartmentView> getEmployeeWithDepartmentIJ(){
+        return employeeRepository.findEmployeeWithDepartmentIJ();
+    }
+
+
+    //JPQL Left Joins
+    public List<EmployeeDepartmentView> getEmployeeWithDepartmentLJ(){
+        return employeeRepository.findEmployeeWithDepartmentLJ();
+    }
+
 }

@@ -18,7 +18,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee saveEmployee(@RequestBody Employee employee, @RequestParam Long departmentId){
+    public Employee saveEmployee(@RequestBody Employee employee, @RequestParam(required = false) Long departmentId){
         return employeeService.saveEmployee(employee, departmentId);
 
     }
@@ -33,14 +33,24 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
+    @GetMapping("/by-dept-jpql")
+    public List<Employee> getEmployeesByDepartmentIdJPQL(@RequestParam Long departmentId){
+        return employeeService.getEmployeesByDepartmentIdJPQL(departmentId);
+    }
+
     @GetMapping("/with-department")
     public List<EmployeeDepartmentView> getEmployeeWithDepartment(){
         return employeeService.getEmployeeWithDepartment();
     }
 
-    @GetMapping("/by-dept-jpql")
-    public List<Employee> getEmployeesByDepartmentIdJPQL(@RequestParam Long departmentId){
-        return employeeService.getEmployeesByDepartmentIdJPQL(departmentId);
+    @GetMapping("/with-department-ij")
+    public List<EmployeeDepartmentView> getEmployeeWithDepartmentIJ(){
+        return employeeService.getEmployeeWithDepartmentIJ();
+    }
+
+    @GetMapping("/with-department-lj")
+    public List<EmployeeDepartmentView> getEmployeeWithDepartmentLJ(){
+        return employeeService.getEmployeeWithDepartmentLJ();
     }
 
 }
