@@ -65,4 +65,9 @@ public class EmployeeService {
         return employeeRepository.findEmployeeWithDepartmentLJ();
     }
 
+    //join fetch
+    public List<Employee> getAllWithDepartment(){
+        return employeeRepository.findAllWithDepartment();
+    }
+
 }

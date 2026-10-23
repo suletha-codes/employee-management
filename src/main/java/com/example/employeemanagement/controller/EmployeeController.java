@@ -53,4 +53,9 @@ public class EmployeeController {
         return employeeService.getEmployeeWithDepartmentLJ();
     }
 
+    @GetMapping("/fetch-with-department")
+    public List<Employee> getAllWithDepartment(){
+        return employeeService.getAllWithDepartment();
+    }
+
 }

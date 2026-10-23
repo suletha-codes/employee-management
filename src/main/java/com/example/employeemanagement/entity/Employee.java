@@ -1,6 +1,7 @@
 package com.example.employeemanagement.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,10 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @OneToOne(mappedBy = "employee")
+    @JsonManagedReference
+    private EmployeeProfile profile;
 
     public Employee() {
     }
@@ -49,5 +54,13 @@ public class Employee {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public EmployeeProfile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(EmployeeProfile profile) {
+        this.profile = profile;
     }
 }
