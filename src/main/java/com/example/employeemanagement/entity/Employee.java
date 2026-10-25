@@ -4,6 +4,9 @@ package com.example.employeemanagement.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Employee {
 
@@ -17,9 +20,13 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JsonManagedReference
     private EmployeeProfile profile;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name="employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private List<Project> projects = new ArrayList<>();
 
     public Employee() {
     }
@@ -62,5 +69,13 @@ public class Employee {
 
     public void setProfile(EmployeeProfile profile) {
         this.profile = profile;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

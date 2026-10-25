@@ -1,9 +1,11 @@
 package com.example.employeemanagement.controller;
 
 
+import com.example.employeemanagement.dto.EmployeeWithProfileRequest;
 import com.example.employeemanagement.entity.Employee;
 import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.service.EmployeeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +24,7 @@ public class EmployeeController {
         return employeeService.saveEmployee(employee, departmentId);
 
     }
+
 
     @GetMapping
     public List<Employee> getAllEmployees(@RequestParam(required = false) Long departmentId){
@@ -56,6 +59,28 @@ public class EmployeeController {
     @GetMapping("/fetch-with-department")
     public List<Employee> getAllWithDepartment(){
         return employeeService.getAllWithDepartment();
+    }
+    //ManyToMany
+
+    @PostMapping("/{employeeId}/projects/{projectId}")
+    public Employee assignProjectToEmployee(@PathVariable Long employeeId, @PathVariable Long projectId){
+        return employeeService.assignProjectToEmployee(employeeId,projectId);
+    }
+    //OneToOne-CaseCade
+
+    @PostMapping("/with-profile")
+    public Employee createEmployeeWithProfile(@RequestBody EmployeeWithProfileRequest request){
+        return employeeService.createEmployeeWithProfile(request);
+    }
+    @PutMapping("/{employeeId}/with-profile")
+    public Employee updateEmployeeWithProfile(@PathVariable Long employeeId, @RequestBody EmployeeWithProfileRequest request){
+    return employeeService.updateEmployeeWithProfilee(employeeId, request);
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long employeeId){
+        employeeService.deleteEmployee(employeeId);
+        return ResponseEntity.noContent().build();
     }
 
 }
