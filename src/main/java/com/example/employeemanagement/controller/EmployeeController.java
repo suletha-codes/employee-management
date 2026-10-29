@@ -83,4 +83,9 @@ public class EmployeeController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{employeeId}/profile")
+    public Employee removeEmployeeProfile(@PathVariable Long employeeId){
+        return employeeService.removeEmployeeWithProfile(employeeId);
+    }
+
 }

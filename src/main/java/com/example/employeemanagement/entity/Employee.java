@@ -16,17 +16,27 @@ public class Employee {
     private String name;
     private double salary;
 
+
+    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST,
+                                                CascadeType.MERGE,
+                                                CascadeType.REMOVE,
+                                                CascadeType.REFRESH,
+                                                CascadeType.DETACH},orphanRemoval = true)
+    @JsonManagedReference
+    private EmployeeProfile profile;
+
+
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JsonManagedReference
-    private EmployeeProfile profile;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name="employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JoinTable(name="employee_project", joinColumns = @JoinColumn(name = "employee_id"),
+                                        inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projects = new ArrayList<>();
+
+
 
     public Employee() {
     }

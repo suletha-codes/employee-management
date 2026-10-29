@@ -138,6 +138,13 @@ public class EmployeeService {
 
     }
 
+    //OrphanRemoval
+    public Employee removeEmployeeWithProfile(Long employeeId){
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(()->new RuntimeException("Employee not found with employee Id "+ employeeId));
+        employee.setProfile(null);
+        return employeeRepository.save(employee);
+    }
+
 
 
 
