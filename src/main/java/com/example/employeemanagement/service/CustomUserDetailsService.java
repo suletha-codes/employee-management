@@ -3,6 +3,7 @@ package com.example.employeemanagement.service;
 import com.example.employeemanagement.entity.User;
 import com.example.employeemanagement.repository.UserRepository;
 
+import com.example.employeemanagement.security.CustomUserPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,10 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRole())
-                .build();
+//        return org.springframework.security.core.userdetails.User
+//                .withUsername(user.getUsername())
+//                .password(user.getPassword())
+//                .roles(user.getRole())
+//                .build();
+        return new CustomUserPrincipal(user);
     }
 }

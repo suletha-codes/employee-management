@@ -6,6 +6,7 @@ import com.example.employeemanagement.entity.Employee;
 import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,6 +79,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long employeeId){
         employeeService.deleteEmployee(employeeId);
         return ResponseEntity.noContent().build();
@@ -86,6 +88,13 @@ public class EmployeeController {
     @DeleteMapping("/{employeeId}/profile")
     public Employee removeEmployeeProfile(@PathVariable Long employeeId){
         return employeeService.removeEmployeeWithProfile(employeeId);
+    }
+
+    //SS - Post Authorize
+    @GetMapping("{employeeId}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long employeeId){
+        Employee employee = employeeService.getEmployeeById(employeeId);
+        return ResponseEntity.ok(employee);
     }
 
 }

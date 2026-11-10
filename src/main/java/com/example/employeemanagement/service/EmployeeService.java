@@ -11,6 +11,7 @@ import com.example.employeemanagement.repository.DepartmentRepository;
 import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.repository.EmployeeRepository;
 import com.example.employeemanagement.repository.ProjectRepository;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -144,7 +145,11 @@ public class EmployeeService {
         employee.setProfile(null);
         return employeeRepository.save(employee);
     }
-
+    //Employee ownership authorization
+    @PostAuthorize("hasRole('ADMIN') or returnObject.id == principal.employee.id")
+    public Employee getEmployeeById(Long employeeId){
+        return employeeRepository.findById(employeeId).orElseThrow(()-> new RuntimeException("Employee not found with iD "+ employeeId));
+    }
 
 
 
