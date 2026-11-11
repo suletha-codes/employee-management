@@ -1,7 +1,9 @@
 package com.example.employeemanagement.controller;
 
 
+import com.example.employeemanagement.dto.EmployeeResponseDTO;
 import com.example.employeemanagement.dto.EmployeeWithProfileRequest;
+import com.example.employeemanagement.dto.ProcessEmployeesRequest;
 import com.example.employeemanagement.entity.Employee;
 import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.service.EmployeeService;
@@ -95,6 +97,26 @@ public class EmployeeController {
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long employeeId){
         Employee employee = employeeService.getEmployeeById(employeeId);
         return ResponseEntity.ok(employee);
+    }
+
+    //Prefilter
+    @PostMapping("/process")
+    public ResponseEntity<String> processEmployees(@RequestBody List<Long> employeeIds){
+        employeeService.processEmployees(employeeIds);
+        return ResponseEntity.ok("Employees processed successfully");
+    }
+
+    //DTO
+    @GetMapping("/dto")
+    public ResponseEntity<List<EmployeeResponseDTO>> getAllEmployeesAsDTO(){
+        List<EmployeeResponseDTO> employees = employeeService.getAllEmployeesAsDTO();
+        return ResponseEntity.ok(employees);
+    }
+
+    @PostMapping("/process-with-departments")
+    public ResponseEntity<String> processEmployeesWithDepartments(@RequestBody ProcessEmployeesRequest request){
+        employeeService.processEmployeesWithDepartments(request.getEmployeeIds(), request.getDepartmentIds());
+        return ResponseEntity.ok("Employees and departments processed successfully");
     }
 
 }

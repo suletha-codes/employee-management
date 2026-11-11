@@ -1,6 +1,7 @@
 package com.example.employeemanagement.service;
 
 
+import com.example.employeemanagement.dto.EmployeeResponseDTO;
 import com.example.employeemanagement.dto.EmployeeWithProfileRequest;
 import com.example.employeemanagement.entity.Department;
 import com.example.employeemanagement.entity.Employee;
@@ -12,6 +13,8 @@ import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.repository.EmployeeRepository;
 import com.example.employeemanagement.repository.ProjectRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,9 +45,9 @@ public class EmployeeService {
 
     }
 
-    public List<Employee> getAllEmployees(){
-        return employeeRepository.findAll();
-    }
+//    public List<Employee> getAllEmployees(){
+//        return employeeRepository.findAll();
+//    }
 
     //Find by dep_ID
     public List<Employee> getEmployeesByDepartmentId(Long departmentId){
@@ -151,6 +154,35 @@ public class EmployeeService {
         return employeeRepository.findById(employeeId).orElseThrow(()-> new RuntimeException("Employee not found with iD "+ employeeId));
     }
 
+    @PostFilter("hasRole('ADMIN') or filterObject.id == principal.employee.id")
+    public  List<Employee> getAllEmployees(){
+        return employeeRepository.findAll();
+    }
+
+    //PreFilter - Bulk method
+    @PreFilter("hasRole('ADMIN') or filterObject == principal.employee.id")
+    public void processEmployees(List<Long> employeeIds){
+        System.out.println("Received employee iDs: ");
+        employeeIds.forEach(System.out::println);
+    }
+    //Filter target
+    @PreFilter(value = "hasRole('ADMIN') or filterObject == principal.employee.id", filterTarget = "employeeIds")
+    public void processEmployeesWithDepartments(List<Long> employeeIds, List<Long> departmentIds){
+        System.out.println("Received employee iDs: ");
+        employeeIds.forEach(System.out::println);
+
+        System.out.println("Received department iDs: ");
+        departmentIds.forEach(System.out::println);
+    }
+
+    //ResponseDTO
+    public List<EmployeeResponseDTO> getAllEmployeesAsDTO(){
+        return getAllEmployees().stream()
+                                .map(employee -> new EmployeeResponseDTO(employee.getId(),
+                                                                                  employee.getName(),
+                                                                                  employee.getSalary())).toList();
+
+    }
 
 
 }
