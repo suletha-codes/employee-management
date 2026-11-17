@@ -9,8 +9,11 @@ import com.example.employeemanagement.repository.EmployeeDepartmentView;
 import com.example.employeemanagement.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.Authenticator;
 import java.util.List;
 
 @RestController
@@ -117,6 +120,21 @@ public class EmployeeController {
     public ResponseEntity<String> processEmployeesWithDepartments(@RequestBody ProcessEmployeesRequest request){
         employeeService.processEmployeesWithDepartments(request.getEmployeeIds(), request.getDepartmentIds());
         return ResponseEntity.ok("Employees and departments processed successfully");
+    }
+
+    //SecurityContextHolder
+    @GetMapping("/current-user")
+    public ResponseEntity<String> getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        String threadName = Thread.currentThread().getName();
+        String authorities = authentication.getAuthorities()
+                .stream()
+                .filter(authority->authority.getAuthority().startsWith("ROLE_"))
+                .map(authority->authority.getAuthority())
+                .toList()
+                .toString();
+        return ResponseEntity.ok("Loggedin-user "+ username + ", Authorities: "+ authorities + ", ThreadName " + threadName);
     }
 
 }
